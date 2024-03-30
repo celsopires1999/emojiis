@@ -1,3 +1,5 @@
+[![Go Reference](https://pkg.go.dev/badge/github.com/celsopires1999/emojiis.svg)](https://pkg.go.dev/github.com/celsopires1999/emojiis)
+
 # emojiis
 
 Emojiis is a Go module that exposes a programmatic API to search and retrieve emoji icons using descriptive terms.
