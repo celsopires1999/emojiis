@@ -1,6 +1,7 @@
 package search
 
 import (
+	"fmt"
 	"slices"
 	"testing"
 )
@@ -45,13 +46,13 @@ func TestByTags(t *testing.T) {
 		tags []string
 		want []string
 	}{
-		"animals": {
-			[]string{"cat"},
-			[]string{"🐱"},
-		},
-		"fruits": {
+		"fruit": {
 			[]string{"fruit"},
 			[]string{"🍇", "🍈", "🍉", "🍊", "🍋"},
+		},
+		"cat": {
+			[]string{"cat"},
+			[]string{"🐱"},
 		},
 	}
 
@@ -59,7 +60,41 @@ func TestByTags(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			result := ByTags(test.tags...)
 			if len(result) != len(test.want) {
-				t.Errorf("Search ByTags: want %d emojis, got %d", len(test.want), len(result))
+				t.Errorf("Search ByDescription: want %d emojis, got %d", len(test.want), len(result))
+			}
+
+			for _, emoji := range result {
+				if !slices.Contains(test.want, emoji.Emoji) {
+					t.Errorf("Search ByDescription: expected %s to be in %#v", emoji, test.want)
+				}
+			}
+		})
+	}
+}
+
+func TestEmojiLike(t *testing.T) {
+	tests := map[string]struct {
+		emoji string
+		want  []string
+	}{
+		"fruit": {
+			"🍇",
+			[]string{"🍇", "🍇", "🍇", "🍈", "🍉", "🍊", "🍋"},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			result := EmojiLike(test.emoji)
+			fmt.Println(result)
+			if len(result) != len(test.want) {
+				t.Errorf("Search ByDescription: want %d emojis, got %d", len(test.want), len(result))
+			}
+
+			for _, emoji := range result {
+				if !slices.Contains(test.want, emoji.Emoji) {
+					t.Errorf("Search ByDescription: expected %s to be in %#v", emoji, test.want)
+				}
 			}
 		})
 	}
